@@ -5,6 +5,8 @@ import pandas as pd
 from pydantic import BaseModel
 from typing import List
 import torch.nn as nn
+import uvicorn
+import os
 
 # Define the Neural Collaborative Filtering model with categories
 class NCF_With_Categories(nn.Module):
@@ -36,10 +38,10 @@ class NCF_With_Categories(nn.Module):
         return output.squeeze()
 
 # Load dataset to get products information
-df = pd.read_csv("products.csv")
+df = pd.read_csv("utils/products.csv")
 
 # Load dataset to get user interactions
-df_users = pd.read_csv("interactions.csv")
+df_users = pd.read_csv("utils/interactions.csv")
 
 # Drop rows with missing values
 df_users = df_users.dropna()
@@ -54,7 +56,7 @@ embedding_dim = 64
 layers = [embedding_dim * 3, 128, 64, 32]
 
 model = NCF_With_Categories(num_users, num_items, num_categories, embedding_dim, layers)
-model.load_state_dict(torch.load("ncf_model_with_categories.pth", map_location=torch.device("cpu")))
+model.load_state_dict(torch.load("utils/ncf_model_with_categories.pth", map_location=torch.device("cpu")))
 model.eval()
 
 # Initialize FastAPI app
@@ -80,7 +82,7 @@ class RecommendationRequest(BaseModel):
     user_id: int
     top_k: int = 10
 
-# 📌 Definir el esquema de la respuesta de recomendaciones
+
 class RecommendationResponse(BaseModel):
     product_id: int
     name: str
@@ -157,5 +159,5 @@ def get_recommendations(request: RecommendationRequest):
 # Run with: uvicorn script_name:app --reload
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    
+    uvicorn.run(app, host="0.0.0.0", port=os.environ.get("PORT_BACKEND_RNA_APPLICATIONS", 3450))

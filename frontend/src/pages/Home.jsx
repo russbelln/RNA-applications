@@ -13,7 +13,7 @@ const githubUsers = [
 const Home = () => {
   const [showVideo, setShowVideo] = useState(false);
   const handleButtonClick = () => {
-    window.location.href = 'https://hackmd.io/SGWzmLKLRFeSHm3HpL-1VA'; // Cambia este enlace al que desees
+    window.location.href = 'https://online.fliphtml5.com/rpiit/jkej/'; // Cambia este enlace al que desees
   };
 
   return (
@@ -82,7 +82,7 @@ const Home = () => {
               ✖
             </button>
             <ReactPlayer
-              url="https://www.youtube.com/watch?v=LXb3EKWsInQ"
+              url="https://youtu.be/5KymhNlCQR8"
               controls
               playing
               width="100%"
